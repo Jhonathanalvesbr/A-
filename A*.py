@@ -25,7 +25,11 @@ for x in range(tamanho):
     caminho.append(linha)
     
 v[2][2] = -1
+v[3][2] = -1
+v[2][3] = -1
 v[4][4] = -1
+v[4][3] = -1
+v[3][4] = -1
 
 def hnDestino(estouX, estouY, destinoX, inicialY):
     return (round(math.sqrt(((destinoX-estouX)**2)+((inicialY-estouY)**2)),2))
@@ -67,14 +71,14 @@ def criaEstado(iniX,iniY,v):
     elif(iniX >= 0 and iniY-1 >= 0 and iniX < tamanho and iniY-1 < tamanho and v[iniX][iniY-1] == 0):#Esquerda
         print("Esquerda")
         return Estado(iniX,iniY-1,v)
-    elif(iniX+1 >= 0 and iniY+1 >= 0 and iniX+1 < tamanho and iniY+1 < tamanho and v[iniX+1][iniY+1] == 0):#315
+    elif(iniX+1 >= 0 and iniY+1 >= 0 and iniX+1 < tamanho and iniY+1 < tamanho and v[iniX+1][iniY+1] == 0):#45
         print("45")
         return Estado(iniX+1,iniY+1,v)
-    elif(iniX+1 >= 0 and iniY-1 >= 0 and iniX+1 < tamanho and iniY-1 < tamanho and v[iniX+1][iniY-1] == 0):#45
-        print("315")
-        return Estado(iniX+1,iniY-1,v)
-    elif(iniX-1 >= 0 and iniY-1 >= 0 and iniX-1 < tamanho and iniY-1 < tamanho and v[iniX-1][iniY-1] == 0):#135
+    elif(iniX+1 >= 0 and iniY-1 >= 0 and iniX+1 < tamanho and iniY-1 < tamanho and v[iniX+1][iniY-1] == 0):#135
         print("135")
+        return Estado(iniX+1,iniY-1,v)
+    elif(iniX-1 >= 0 and iniY-1 >= 0 and iniX-1 < tamanho and iniY-1 < tamanho and v[iniX-1][iniY-1] == 0):#315
+        print("315")
         return Estado(iniX-1,iniY-1,v)
     elif(iniX-1 >= 0 and iniY+1 >= 0 and iniX-1 < tamanho and iniY+1 < tamanho and v[iniX-1][iniY+1] == 0):#225
         print("225")
