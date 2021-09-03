@@ -118,13 +118,18 @@ class Arvore:
         self.caminho = caminho
         self.altura = altura
         self.filho = filho
-        self.qntFilho = []
         
 a = arvore = Arvore(v,criarNo(iniX,iniY,caminho), 0)
 
 for i in range(len(arvore.filho)):
-    aux = Arvore(arvore.caminho,criarNo(arvore.filho[i].x,arvore.filho[i].y,arvore.filho[i].caminho),arvore.altura+1)
-    a.qntFilho.append(aux)
+    aux = Arvore(arvore.filho[i].caminho,criarNo(arvore.filho[i].x,arvore.filho[i].y,arvore.filho[i].caminho),arvore.altura+1)
+    print()
+    print()
+    imprimir(aux.caminho)
+    imprimir(aux.filho[0].caminho)
+    imprimir(aux.filho[1].caminho)
+    print()
+    print()
 
 
 for i in range(len(arvore.filho)):
