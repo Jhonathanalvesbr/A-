@@ -101,29 +101,36 @@ def criarNo(iniX,iniY,v):
             j = 0
             existe = 1
             for k in range(len(historico)):
-                if():
+                if(k == aux.caminho):
                     existe = -1
-            while(len(lista) > 0 and j < len(lista) and aux.atual > lista[j].atual):
-                j += 1
-            lista.insert(j,aux)
+            if(existe):
+                historico.append(aux.caminho)
+                while(len(lista) > 0 and j < len(lista) and aux.atual > lista[j].atual):
+                    j += 1
+                lista.insert(j,aux)
             caminho = deepcopy(v)
     return lista
 
 imprimir(caminho)
 
 class Arvore:
-    def __init__(self, no, filho):
-        self.no = no
+    def __init__(self, caminho, filho, altura):
+        self.caminho = caminho
+        self.altura = altura
         self.filho = filho
+        self.qntFilho = []
+        
+a = arvore = Arvore(v,criarNo(iniX,iniY,caminho), 0)
+
+for i in range(len(arvore.filho)):
+    aux = Arvore(arvore.caminho,criarNo(arvore.filho[i].x,arvore.filho[i].y,arvore.filho[i].caminho),arvore.altura+1)
+    a.qntFilho.append(aux)
 
 
-a = Arvore(v,criarNo(iniX,iniY,caminho))
-b = Arvore(a.no,criarNo(a.filho[0].x,a.filho[0].y,a.filho[0].caminho))
-
-
-for i in range(len(a.filho)):
-    for j in range(len(a.filho[i].caminho)):
-        print(a.filho[i].caminho[j])
+for i in range(len(arvore.filho)):
+    for j in range(len(arvore.filho[i].caminho)):
+        
+        print(arvore.filho[i].caminho[j])
     print()
 
 
