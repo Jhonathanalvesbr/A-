@@ -11,6 +11,7 @@ iniY = 0
 desX = 6
 desY = 6
 v = caminho = []
+historico = []
 
 for x in range(tamanho):
     linha = [] 
@@ -82,24 +83,48 @@ def criaEstado(iniX,iniY,v,i):
         return Estado(iniX-1,iniY+1,v)
     else:
         return -1
+    
+def inserir(aux, lista):
+    j = 0
+    while(len(lista) > 0 and j < len(lista) and aux.atual > lista[j].atual):
+        j += 1
+    lista.insert(j,aux)
+                
+    return lista
 
 def criarNo(iniX,iniY,v):
     lista = []
     caminho = deepcopy(v)
     for i in range(8):
-        aux = criaEstado(iniX,iniY,caminho,i)
+        aux = criaEstado(iniX,iniY,caminho[:],i)
         if(aux != -1):
-            imprimir(caminho)
-            print("\n\n")
+            j = 0
+            existe = 1
+            for k in range(len(historico)):
+                if():
+                    existe = -1
+            while(len(lista) > 0 and j < len(lista) and aux.atual > lista[j].atual):
+                j += 1
+            lista.insert(j,aux)
             caminho = deepcopy(v)
-            lista.append(aux)
     return lista
 
 imprimir(caminho)
 
-v = []
-v = criarNo(iniX,iniY,caminho)
-sorted(v, key=lambda v: v.atual)
+class Arvore:
+    def __init__(self, no, filho):
+        self.no = no
+        self.filho = filho
 
-for i in range(len(v)):
-    imprimir(v[i].caminho)
+
+a = Arvore(v,criarNo(iniX,iniY,caminho))
+b = Arvore(a.no,criarNo(a.filho[0].x,a.filho[0].y,a.filho[0].caminho))
+
+
+for i in range(len(a.filho)):
+    for j in range(len(a.filho[i].caminho)):
+        print(a.filho[i].caminho[j])
+    print()
+
+
+
