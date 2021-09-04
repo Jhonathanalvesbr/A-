@@ -83,6 +83,34 @@ def criaEstado(iniX,iniY,v,i):
         return Estado(iniX-1,iniY+1,v)
     else:
         return -1
+
+def win(iniX,iniY,v):
+    if(iniX+1 >= 0 and iniY >= 0 and iniX+1 < tamanho and iniY < tamanho and v[iniX+1][iniY] == 3):#Baixo
+        #print("Baixo")
+        return Estado(iniX+1,iniY,v)
+    elif(iniX-1 >= 0 and iniY >= 0 and iniX-1 < tamanho and iniY < tamanho and v[iniX-1][iniY] == 3):#Cima
+        #print("Cima")
+        return Estado(iniX-1,iniY,v)
+    elif(iniX >= 0 and iniY+1 >= 0 and iniX < tamanho and iniY+1 < tamanho and v[iniX][iniY+1] == 3):#Direita
+        #print("Direita")
+        return Estado(iniX,iniY+1,v)
+    elif(iniX >= 0 and iniY-1 >= 0 and iniX < tamanho and iniY-1 < tamanho and v[iniX][iniY-1] == 3):#Esquerda
+        #print("Esquerda")
+        return Estado(iniX,iniY-1,v)
+    elif(iniX+1 >= 0 and iniY+1 >= 0 and iniX+1 < tamanho and iniY+1 < tamanho and v[iniX+1][iniY+1] == 3):#135
+        #print("135")
+        return Estado(iniX+1,iniY+1,v)
+    elif(iniX+1 >= 0 and iniY-1 >= 0 and iniX+1 < tamanho and iniY-1 < tamanho and v[iniX+1][iniY-1] == 3):#225
+        #print("225")
+        return Estado(iniX+1,iniY-1,v)
+    elif(iniX-1 >= 0 and iniY-1 >= 0 and iniX-1 < tamanho and iniY-1 < tamanho and v[iniX-1][iniY-1] == 3):#315
+        #print("315")
+        return Estado(iniX-1,iniY-1,v)
+    elif(iniX-1 >= 0 and iniY+1 >= 0 and iniX-1 < tamanho and iniY+1 < tamanho and v[iniX-1][iniY+1] == 3):#45
+        #print("45")
+        return Estado(iniX-1,iniY+1,v)
+    else:
+        return -1
     
 def inserir(aux, lista):
     j = 0
@@ -111,32 +139,28 @@ def criarNo(iniX,iniY,v):
             caminho = deepcopy(v)
     return lista
 
-imprimir(caminho)
+e = Estado(iniX,iniY,caminho)
 
-class Arvore:
-    def __init__(self, caminho, filho, altura):
-        self.caminho = caminho
-        self.altura = altura
-        self.filho = filho
-        
-a = arvore = Arvore(v,criarNo(iniX,iniY,caminho), 0)
+#e = Estado(iniX,iniY,caminho)
 
-for i in range(len(arvore.filho)):
-    aux = Arvore(arvore.filho[i].caminho,criarNo(arvore.filho[i].x,arvore.filho[i].y,arvore.filho[i].caminho),arvore.altura+1)
-    print()
-    print()
-    imprimir(aux.caminho)
-    imprimir(aux.filho[0].caminho)
-    imprimir(aux.filho[1].caminho)
-    print()
-    print()
+imprimir(e.caminho)
+#for k in range(len(e.filho)):
 
+def recursivo(e):
+    a = win(e.x,e.y,e.caminho)
+    if(a != -1):
+        #imprimir(a.caminho)
+        return a
+    aux = criarNo(e.x,e.y,e.caminho)
+    for i in range(len(aux)):
+        aux[i].filho = criarNo(aux[i].x,aux[i].y,aux[i].caminho)
+    e.filho = aux
+    for i in range(len(aux)):
+        if(win(aux[i].x,aux[i].y,aux[i].caminho) != -1):
+            #imprimir(aux[i].caminho)
+            return aux[i]
+        else:
+            recursivo(aux[i])
+    return aux
 
-for i in range(len(arvore.filho)):
-    for j in range(len(arvore.filho[i].caminho)):
-        
-        print(arvore.filho[i].caminho[j])
-    print()
-
-
-
+recursivo(e)
