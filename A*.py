@@ -691,7 +691,7 @@ while True:
               #print(pacMan.rect.x)
               #print(pacMan.rect.y)
               #print("")
-   
+    '''
     pygame.draw.line(janela, pygame.Color(255,255,255), (0, 700), (800, 700), 1)
     pygame.draw.line(janela, pygame.Color(255,255,255), (0, 600), (800, 600), 1)
     pygame.draw.line(janela, pygame.Color(255,255,255), (0, 500), (800, 500), 1)
@@ -710,7 +710,7 @@ while True:
     pygame.draw.line(janela, pygame.Color(255,255,255), (500, 0), (500, 800), 1)
     pygame.draw.line(janela, pygame.Color(255,255,255), (600, 0), (600, 800), 1)
     pygame.draw.line(janela, pygame.Color(255,255,255), (700, 0), (700, 800), 1)
-    
+    '''
     
     todas_as_sprites.draw(janela)
     todas_as_sprites.update()
