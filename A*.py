@@ -812,3 +812,203 @@ while True:
     pygame.display.update()
     janela.fill((0,0,0))
 
+
+    
+    
+    import math
+from copy import deepcopy
+
+listaAberta = []
+listaFechada = []
+caminho = []
+tamanho = 8
+iniX = 7
+iniY = 0
+desX = 0
+desY = 7
+
+for x in range(tamanho):
+    linha = [] 
+    for y in range(tamanho):
+        linha.append(0)
+        linha[y] = 0
+        if(iniX == x and iniY == y):
+            linha[y] = 1
+        elif(desX == x and desY == y):
+            linha[y] = 3
+    caminho.append(linha)
+
+caminho[0][6] = -1
+caminho[1][6] = -1
+caminho[2][6] = -1
+caminho[3][6] = -1
+
+class Estado():
+    parente = []
+    def __init__(self, x, y, caminho):
+        self.x = x
+        self.y = y
+        self.g = math.inf
+        self.h = math.inf
+        self.f = math.inf
+        self.caminho = caminho[:]
+        if(self.caminho[x][y] != 1):
+            self.caminho[x][y] = 2
+            
+def criaEstado(iniX,iniY,v):
+    e = -1
+    if(iniX+1 >= 0 and iniY >= 0 and iniX+1 < tamanho and iniY < tamanho and v[iniX+1][iniY] == 0):#Baixo
+        #print("Baixo")
+        e =  Estado(iniX+1,iniY,v)
+    elif(iniX-1 >= 0 and iniY >= 0 and iniX-1 < tamanho and iniY < tamanho and v[iniX-1][iniY] == 0):#Cima
+        #print("Cima")
+        e =  Estado(iniX-1,iniY,v)
+    elif(iniX >= 0 and iniY+1 >= 0 and iniX < tamanho and iniY+1 < tamanho and v[iniX][iniY+1] == 0):#Direita
+        #print("Direita")
+        e = Estado(iniX,iniY+1,v)
+    elif(iniX >= 0 and iniY-1 >= 0 and iniX < tamanho and iniY-1 < tamanho and v[iniX][iniY-1] == 0):#Esquerda
+        #print("Esquerda")
+        e = Estado(iniX,iniY-1,v)
+    elif(iniX+1 >= 0 and iniY+1 >= 0 and iniX+1 < tamanho and iniY+1 < tamanho and v[iniX+1][iniY+1] == 0):#135
+        #print("135")
+        e = Estado(iniX+1,iniY+1,v)
+    elif(iniX+1 >= 0 and iniY-1 >= 0 and iniX+1 < tamanho and iniY-1 < tamanho and v[iniX+1][iniY-1] == 0):#225
+        #print("225")
+        e = Estado(iniX+1,iniY-1,v)
+    elif(iniX-1 >= 0 and iniY-1 >= 0 and iniX-1 < tamanho and iniY-1 < tamanho and v[iniX-1][iniY-1] == 0):#315
+        #print("315")
+        e = Estado(iniX-1,iniY-1,v)
+    elif(iniX-1 >= 0 and iniY+1 >= 0 and iniX-1 < tamanho and iniY+1 < tamanho and v[iniX-1][iniY+1] == 0):#45
+        #print("45")
+        e = Estado(iniX-1,iniY+1,v)
+    if(e != -1):
+        return e
+    else:
+        return -1
+
+def criarNo(q):
+    iniX = q.x
+    iniY = q.y
+    v = q.caminho
+    e = []
+    if(iniX+1 >= 0 and iniY >= 0 and iniX+1 < tamanho and iniY < tamanho and v[iniX+1][iniY] == 0):#Baixo
+        #print("Baixo")
+        e.append(Estado(iniX+1,iniY,deepcopy(v)))
+        e[len(e)-1].parente = q
+    if(iniX-1 >= 0 and iniY >= 0 and iniX-1 < tamanho and iniY < tamanho and v[iniX-1][iniY] == 0):#Cima
+        #print("Cima")
+        e.append(Estado(iniX-1,iniY,deepcopy(v)))
+        e[len(e)-1].parente = q
+    if(iniX >= 0 and iniY+1 >= 0 and iniX < tamanho and iniY+1 < tamanho and v[iniX][iniY+1] == 0):#Direita
+        #print("Direita")
+        e.append(Estado(iniX,iniY+1,deepcopy(v)))
+        e[len(e)-1].parente = q
+    if(iniX >= 0 and iniY-1 >= 0 and iniX < tamanho and iniY-1 < tamanho and v[iniX][iniY-1] == 0):#Esquerda
+        #print("Esquerda")
+        e.append(Estado(iniX,iniY-1,deepcopy(v)))
+        e[len(e)-1].parente = q
+    if(iniX+1 >= 0 and iniY+1 >= 0 and iniX+1 < tamanho and iniY+1 < tamanho and v[iniX+1][iniY+1] == 0):#135
+        #print("135")
+        e.append(Estado(iniX+1,iniY+1,deepcopy(v)))
+        e[len(e)-1].parente = q
+    if(iniX+1 >= 0 and iniY-1 >= 0 and iniX+1 < tamanho and iniY-1 < tamanho and v[iniX+1][iniY-1] == 0):#225
+        #print("225")
+        e.append(Estado(iniX+1,iniY-1,deepcopy(v)))
+        e[len(e)-1].parente = q
+    if(iniX-1 >= 0 and iniY-1 >= 0 and iniX-1 < tamanho and iniY-1 < tamanho and v[iniX-1][iniY-1] == 0):#315
+        #print("315")
+        e.append(Estado(iniX-1,iniY-1,deepcopy(v)))
+        e[len(e)-1].parente = q
+    if(iniX-1 >= 0 and iniY+1 >= 0 and iniX-1 < tamanho and iniY+1 < tamanho and v[iniX-1][iniY+1] == 0):#45
+        #print("45")
+        e.append(Estado(iniX-1,iniY+1,deepcopy(v)))
+        e[len(e)-1].parente = q
+    if(e != []):
+        return e
+    else:
+        return -1
+
+
+def win(e):
+    if(e == -1):
+        return -1
+    iniX = e.x
+    iniY = e.y
+    v = e.caminho
+    if(iniX+1 >= 0 and iniY >= 0 and iniX+1 < tamanho and iniY < tamanho and v[iniX+1][iniY] == 3):#Baixo
+        #print("Baixo")
+        return e
+    elif(iniX-1 >= 0 and iniY >= 0 and iniX-1 < tamanho and iniY < tamanho and v[iniX-1][iniY] == 3):#Cima
+        #print("Cima")
+        return e
+    elif(iniX >= 0 and iniY+1 >= 0 and iniX < tamanho and iniY+1 < tamanho and v[iniX][iniY+1] == 3):#Direita
+        #print("Direita")
+        return e
+    elif(iniX >= 0 and iniY-1 >= 0 and iniX < tamanho and iniY-1 < tamanho and v[iniX][iniY-1] == 3):#Esquerda
+        #print("Esquerda")
+        return e
+    elif(iniX+1 >= 0 and iniY+1 >= 0 and iniX+1 < tamanho and iniY+1 < tamanho and v[iniX+1][iniY+1] == 3):#135
+        #print("135")
+        return e
+    elif(iniX+1 >= 0 and iniY-1 >= 0 and iniX+1 < tamanho and iniY-1 < tamanho and v[iniX+1][iniY-1] == 3):#225
+        #print("225")
+        return e
+    elif(iniX-1 >= 0 and iniY-1 >= 0 and iniX-1 < tamanho and iniY-1 < tamanho and v[iniX-1][iniY-1] == 3):#315
+        #print("315")
+        return e
+    elif(iniX-1 >= 0 and iniY+1 >= 0 and iniX-1 < tamanho and iniY+1 < tamanho and v[iniX-1][iniY+1] == 3):#45
+        #print("45")
+        return e
+    else:
+        return -1
+    
+def inserir(lista, aux):
+    j = 0
+    while(len(lista) > 0 and j < len(lista) and aux.f > lista[j].f):
+        j += 1
+    lista.insert(j,aux)
+
+    return lista
+
+def imprimir(caminho):
+    caminho = caminho.caminho
+    for x in range(len(caminho)):
+        for y in range(len(caminho)):
+            print(caminho[x][y], end="")
+            print("|", end="")
+        print()
+    print()
+
+e = criaEstado(iniX,iniY,caminho)
+e.f = 0
+e.g = 0
+e.h = 0
+listaAberta.append(e)
+
+def custo(x,y,desX,desY):
+    return math.sqrt(pow((x - desX), 2.0)+pow((y - desY), 2.0));
+
+def busca():
+    global listaAberta
+    while(len(listaAberta) > 0):
+        q = -1
+        i = 0
+        pai = listaAberta[0]
+        listaFechada.append(pai)
+        if(win(pai) != -1):
+            return pai
+        filho = criarNo(pai)
+        listaAberta.pop(0)
+        for i in filho:
+            i.g = gNew = pai.g + 1.0
+            i.h = hNew = custo(i.x,i.y,desX,desY)
+            i.f = fNew = gNew+hNew
+            existe = -1
+            for x in listaAberta:
+                if(x.parente == pai.parente):
+                    existe = 1
+                    break
+            if(existe == -1):
+                listaAberta = inserir(listaAberta,i)
+                
+busca()
