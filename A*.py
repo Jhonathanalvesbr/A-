@@ -7,12 +7,6 @@ from pygame.locals import *
 from sys import exit
 import time
 
-
-pygame.init()
-pygame.display.set_caption('Game IA')
-janela = pygame.display.set_mode((800,800))
-
-
 x = []
 y = []
 tamanho = 8
@@ -74,7 +68,7 @@ class Estado():
         self.x = x
         self.y = y
         self.destino = hnDestino(x,y,desX,desY)
-        self.atual = abs(x-desX)+abs(y-desY)+desX+desY
+        self.atual = 1 * (abs(self.x - desX) +abs(self.y - desY))
         self.caminho = caminho[:]
         if(self.caminho[x][y] != 1):
             self.caminho[x][y] = 2
@@ -90,30 +84,33 @@ def imprimir(caminho):
     print()
 
 def criaEstado(iniX,iniY,v,i):
+    e = -1
     if(iniX+1 >= 0 and iniY >= 0 and iniX+1 < tamanho and iniY < tamanho and v[iniX+1][iniY] == 0 and i == 0):#Baixo
         #print("Baixo")
-        return Estado(iniX+1,iniY,v)
+        e =  Estado(iniX+1,iniY,v)
     elif(iniX-1 >= 0 and iniY >= 0 and iniX-1 < tamanho and iniY < tamanho and v[iniX-1][iniY] == 0 and i == 1):#Cima
         #print("Cima")
-        return Estado(iniX-1,iniY,v)
+        e =  Estado(iniX-1,iniY,v)
     elif(iniX >= 0 and iniY+1 >= 0 and iniX < tamanho and iniY+1 < tamanho and v[iniX][iniY+1] == 0 and i == 2):#Direita
         #print("Direita")
-        return Estado(iniX,iniY+1,v)
+        e = Estado(iniX,iniY+1,v)
     elif(iniX >= 0 and iniY-1 >= 0 and iniX < tamanho and iniY-1 < tamanho and v[iniX][iniY-1] == 0 and i == 3):#Esquerda
         #print("Esquerda")
-        return Estado(iniX,iniY-1,v)
+        e = Estado(iniX,iniY-1,v)
     elif(iniX+1 >= 0 and iniY+1 >= 0 and iniX+1 < tamanho and iniY+1 < tamanho and v[iniX+1][iniY+1] == 0 and i == 4):#135
         #print("135")
-        return Estado(iniX+1,iniY+1,v)
+        e = Estado(iniX+1,iniY+1,v)
     elif(iniX+1 >= 0 and iniY-1 >= 0 and iniX+1 < tamanho and iniY-1 < tamanho and v[iniX+1][iniY-1] == 0 and i == 5):#225
         #print("225")
-        return Estado(iniX+1,iniY-1,v)
+        e = Estado(iniX+1,iniY-1,v)
     elif(iniX-1 >= 0 and iniY-1 >= 0 and iniX-1 < tamanho and iniY-1 < tamanho and v[iniX-1][iniY-1] == 0 and i == 6):#315
         #print("315")
-        return Estado(iniX-1,iniY-1,v)
+        e = Estado(iniX-1,iniY-1,v)
     elif(iniX-1 >= 0 and iniY+1 >= 0 and iniX-1 < tamanho and iniY+1 < tamanho and v[iniX-1][iniY+1] == 0 and i == 7):#45
         #print("45")
-        return Estado(iniX-1,iniY+1,v)
+        e = Estado(iniX-1,iniY+1,v)
+    if(e != -1):
+        return e
     else:
         return -1
 
@@ -150,7 +147,6 @@ def win(e):
     else:
         return -1
 
-
 def winCasoBase(e):
     if(e == -1):
         return -1
@@ -183,7 +179,6 @@ def winCasoBase(e):
         return Estado(iniX-1,iniY+1,v)
     else:
         return -1
-    
 
 def winFechada(e):
     if(e == -1):
@@ -217,6 +212,7 @@ def winFechada(e):
         return e
     else:
         return -1
+    
     
 def inserir(lista, aux):
     j = 0
@@ -271,50 +267,133 @@ def criarNo(iniX,iniY,v):
         listaFechada.append(aux)
         return -1
     return aux
+
+
+'''
+def teste(lista):
+    j = 0
+    k = 0
+    a = -1
+    b = -1
+    while(j < len(lista)):
+        k = 1
+        while (k < len(lista)-1):
+            if(lista[k+1].x == lista[k].x and lista[k+1].y == lista[k].y):
+                if(a == -1):
+                    a = j
+                elif(b == -1):
+                    l = []
+                    print(a)
+                    print(k)
+                    print("")
+                    i = a
+                    while a <= k:
+                        lista.pop(i)
+                        a += 1
+                    a = -1
+                    #for i in lista:
+                    #    imprimir(i)
+                    k = 0
+            k += 1
+        a = -1
+        
+        j+= 1
+    exit(0)
+    return lista'''
+
+def teste(lista):
+    x = len(lista)-1
+    k = []
+
+
+    
+    while(x >= 1):
+        if(k == [] or 1*(abs(lista[x].x - iniX) + abs(lista[x].y - iniY)) < 1*(abs(k[len(k)-1].x - iniX) + abs(k[len(k)-1].y - iniY))):
+            
+            k.append(lista[x])
+        x -= 1
+
+
+    print(len(k))
+    #for i in k:
+    #    imprimir(i)
+    k = [num for num in reversed(k)]
+    
+    
+    return k
+
+
 '''
 zerar()
-iniX = 6
-iniY = 0
-
-
-caminho[iniX][iniY] = 1
-caminho[iniX+1][iniY] = 3
-caminho[desX][desY] = 0
-desX = 7
+iniX = 7
+iniY = 7
+desX = 0
 desY = 0
+caminho[iniX][iniY] = 1
+caminho[desX][desY] = 3
+caminho[6][1] = -1
+caminho[5][1] = -1
+caminho[7][1] = -1
+caminho[0][1] = -1
+
+caminho[3][1] = -1
+caminho[2][1] = -1
+caminho[1][1] = -1
+
+
 
 e = Estado(iniX,iniY,caminho)
+imprimir(e)
+
+
+
+
 if(winCasoBase(e) == -1): 
     while(e != -1):
         e = criarNo(e.x,e.y,e.caminho)
 else:
     listaFechada.append(e)
 
-    
+print(len(listaFechada))
+listaFechada = teste(listaFechada)
+
+
 t = len(listaFechada)-1
 while(t >= 0):
     if(winFechada(listaFechada[t]) != -1):
         break
     t -= 1
-
+    
 while(t >= 0):
     listaFechada.pop(0)
     t -= 1
 
+
+    
 for i in listaFechada:
     imprimir(i)
 
-    
+
+exit(0)
+
+
 '''
+
+
+
+
+pygame.init()
+pygame.display.set_caption('Game IA')
+janela = pygame.display.set_mode((800,800))
 
 
 class PacMan(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.sprites = []
-        self.sprites.append(pygame.image.load('0.png'))
         self.sprites.append(pygame.image.load('1.png'))
         self.sprites.append(pygame.image.load('2.png'))
+        self.sprites.append(pygame.image.load('3.png'))
         self.atual = 0
         self.image = self.sprites[self.atual]
         self.angle = 0
@@ -418,6 +497,7 @@ pacMan.rect.y = 600
 todas_as_sprites.add(pacMan)
 fim = time.time()
 ini = time.time()
+
 zerar()
 caminho[desX][desY] = 0
 while True:
@@ -447,11 +527,12 @@ while True:
             if(i.rect.collidepoint(p)):
                 if(isinstance(i, Comida)):
                     todas_as_sprites.remove(i)
-                    caminho[listaFechada[0].y][listaFechada[0].x] = 0
-                    break
-            
+                    caminho[listaFechada[0].x][listaFechada[0].y] = 0
+                    
+        #print(caminho)
         listaFechada.pop(0)
         if(len(listaFechada) == 0):
+            
             zerar()
             xTemp = iniY = int(pacMan.rect.x/100)
             yTemp = iniX = int(pacMan.rect.y/100)
@@ -460,7 +541,7 @@ while True:
             caminho[iniX][iniY] = 1
             if(caminho[desX][desY] != -1):
                 caminho[iniX][iniY] = 2
-                e =  -1
+                e = -1
                 for x in range(len(caminho)):
                     for y in range(len(caminho)):
                         if(caminho[x][y] == 3):
@@ -468,6 +549,13 @@ while True:
                             desY = y
                             e = 1
                             break
+
+                    
+                    #print(int(pos[0]/100))
+                    #print(int(pos[1]/100))
+                    
+
+                    #print(pos)
                 if(e != -1):
                     
                     #print(int(pos[0]/100))
@@ -476,6 +564,7 @@ while True:
 
                     #print(pos)
                     e = Estado(iniX,iniY,caminho)
+                    
                     t = winCasoBase(e)
                     if(t == -1): 
                         while(e != -1):
@@ -489,11 +578,13 @@ while True:
 
                         while(t >= 0):
                             listaFechada.pop(0)
+
                             t -= 1
+                        
                     else:
                         listaFechada.append(t)
 
-                        
+                    listaFechada = teste(listaFechada)
                     
 
 
@@ -576,52 +667,51 @@ while True:
             
         if(teclado[pygame.K_F5]):
             zerar()
-            #print(caminho)
             xTemp = iniY = int(pacMan.rect.x/100)
             yTemp = iniX = int(pacMan.rect.y/100)
             desX = int(xTemp)
             desY = int(yTemp)
-            caminho[xTemp][yTemp] = 1
-            if(caminho[desX][desY] != -1):
-                caminho[iniX][iniY] = 2
-                e =  -1
-                for x in range(len(caminho)):
-                    for y in range(len(caminho)):
-                        if(caminho[x][y] == 3):
-                            desX = x
-                            desY = y
-                            e = 1
-                            break
-                if(e == -1):
-                    break
+            caminho[desY][desX] = 1
+            e = -1
+            for x in range(len(caminho)):
+                for y in range(len(caminho)):
+                    if(caminho[x][y] == 3):
+                        desX = x
+                        desY = y
+                        e = 1
+                        break
                 #print(int(pos[0]/100))
                 #print(int(pos[1]/100))
                 
 
                 #print(pos)
-                e = Estado(iniX,iniY,caminho)
-                t = winCasoBase(e)
-                if(t == -1): 
-                    while(e != -1):
-                        e = criarNo(e.x,e.y,e.caminho)
-
-                        t = len(listaFechada)-1
-                        while(t >= 0):
-                            if(winFechada(listaFechada[t]) != -1):
-                                break
-                            t -= 1
-
-                        while(t >= 0):
-                            listaFechada.pop(0)
-                            t -= 1
-                else:
-                    listaFechada.append(t)
-
+            e = Estado(iniX,iniY,caminho)
                     
-                
-                
-                ini = time.time()
-                caminho[desX][desY] = 0
+            t = winCasoBase(e)
+            if(t == -1): 
+                while(e != -1):
+                    e = criarNo(e.x,e.y,e.caminho)
+
+                t = len(listaFechada)-1
+                while(t >= 0):
+                    if(winFechada(listaFechada[t]) != -1):
+                        break
+                    t -= 1
+
+                while(t >= 1):
+                    listaFechada.pop(0)
+                    print("s")
+                    t -= 1
+                        
+            else:
+                listaFechada.append(t)
+
+            listaFechada = teste(listaFechada)
+                    
+
+
+            ini = time.time()
+            caminho[desX][desY] = 0
                 
                 #print("============")
                 #for i in listaFechada:
@@ -634,10 +724,9 @@ while True:
                     #pacMan.rect.x = i.x*100
                     #pacMan.rect.y = i.y*100
                     #print("")
-                
 
    
-        if(pygame.mouse.get_pressed()[2] == True):
+        if(pygame.mouse.get_pressed()[0] == True):
             time.sleep(0.05)
             pos = pygame.mouse.get_pos()
             xTemp = int(pos[1]/100)
@@ -651,14 +740,18 @@ while True:
                 fantasma[len(fantasma)-1].rect.x = yTemp*100
                 todas_as_sprites.add(fantasma[len(fantasma)-1])
                 caminho[xTemp][yTemp] = -1
+                #print(caminho)
+                time.sleep(0.05)
             else:
                 for i in fantasma:
                     if(i.rect.collidepoint(p)):
-                        todas_as_sprites.remove(i)
-                        caminho[xTemp][yTemp] = 0
-                        break
+                        if(isinstance(i, Fantasma)):
+                            todas_as_sprites.remove(i)
+                            caminho[xTemp][yTemp] = 0
+                            time.sleep(0.05)
+                            
 
-        if(pygame.mouse.get_pressed()[0] == True):
+        if(pygame.mouse.get_pressed()[2] == True):
             time.sleep(0.05)
             pos = pygame.mouse.get_pos()
             xTemp = int(pos[1]/100)
@@ -672,13 +765,14 @@ while True:
                 comida[len(comida)-1].rect.y = xTemp*100
                 comida[len(comida)-1].rect.x = yTemp*100
                 todas_as_sprites.add(comida[len(comida)-1])
-                
+                time.sleep(0.05)
             else:
                 for i in comida:
                     if(i.rect.collidepoint(p)):
                         if(isinstance(i, Comida)):
                             todas_as_sprites.remove(i)
                             caminho[xTemp][yTemp] = 0
+                            time.sleep(0.05)
                             
  
 
@@ -691,7 +785,7 @@ while True:
               #print(pacMan.rect.x)
               #print(pacMan.rect.y)
               #print("")
-    '''
+    
     pygame.draw.line(janela, pygame.Color(255,255,255), (0, 700), (800, 700), 1)
     pygame.draw.line(janela, pygame.Color(255,255,255), (0, 600), (800, 600), 1)
     pygame.draw.line(janela, pygame.Color(255,255,255), (0, 500), (800, 500), 1)
@@ -710,10 +804,11 @@ while True:
     pygame.draw.line(janela, pygame.Color(255,255,255), (500, 0), (500, 800), 1)
     pygame.draw.line(janela, pygame.Color(255,255,255), (600, 0), (600, 800), 1)
     pygame.draw.line(janela, pygame.Color(255,255,255), (700, 0), (700, 800), 1)
-    '''
+    
     
     todas_as_sprites.draw(janela)
     todas_as_sprites.update()
     
     pygame.display.update()
     janela.fill((0,0,0))
+
