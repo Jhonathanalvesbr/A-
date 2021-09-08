@@ -130,6 +130,7 @@ pygame.init()
 pygame.display.set_caption('Game IA')
 janela = pygame.display.set_mode((800,800))
 
+
 for x in range(tamanho):
     linha = []
     for y in range(tamanho):
@@ -291,7 +292,7 @@ def busca():
         listaAberta.pop(0)
         w = win(pai)
         if(w != -1):
-            print("Win")
+            #print("Win")
             w.parente = pai
             return w
         for i in range(8):
@@ -338,7 +339,7 @@ movimento = []
 while True:
     #janela.fill(pygame.color(255,255,255))
     fim = time.time()
-    if(fim-ini  > 0.5 and len(movimento) > 0 and caminhoVazio() == 1):
+    if(fim-ini  > 0.5 and len(movimento) > 0):
         if(pacMan.rect.x < movimento[0][0]*100):
             pacMan.angle = 0
         if(pacMan.rect.x > movimento[0][0]*100):
@@ -363,21 +364,22 @@ while True:
                     caminho[movimento[0][0]][movimento[0][1]] = 0
                     
         movimento.pop(0)
-        if(len(movimento) == 0 and caminhoVazio() == 1):
-            print(caminho)
-            xTemp = iniY = int(pacMan.rect.x/100)
-            yTemp = iniX = int(pacMan.rect.y/100)
-            desX = int(xTemp)
-            desY = int(yTemp)
-            caminho[iniX][iniY] = 1
+        if(len(movimento) == 0):
             if(caminhoVazio() == 1):
-                listaAberta = []
-                listaFechada = []
-                e = Estado(iniX,iniY)
-                listaAberta.append(e)
-                e = busca()
-                movimento = getCaminho(e)
-                caminho[yTemp][xTemp] = 0
+                #print(caminho)
+                xTemp = iniY = int(pacMan.rect.x/100)
+                yTemp = iniX = int(pacMan.rect.y/100)
+                desX = int(xTemp)
+                desY = int(yTemp)
+                caminho[iniX][iniY] = 1
+                if(caminhoVazio() == 1):
+                    listaAberta = []
+                    listaFechada = []
+                    e = Estado(iniX,iniY)
+                    listaAberta.append(e)
+                    e = busca()
+                    movimento = getCaminho(e)
+                    caminho[yTemp][xTemp] = 0
                     
     
     for event in pygame.event.get():
@@ -442,34 +444,35 @@ while True:
             pygame.quit()
             exit()
             
-        if(teclado[pygame.K_F5] and caminhoVazio() == 1):
-            time.sleep(0.1)
-            xTemp = iniY = int(pacMan.rect.x/100)
-            yTemp = iniX = int(pacMan.rect.y/100)
-            desX = int(xTemp)
-            desY = int(yTemp)
-            caminho[desY][desX] = 1
-            for x in range(len(caminho)):
-                for y in range(len(caminho)):
-                    if(caminho[x][y] == 3):
-                        desX = x
-                        desY = y
-                        break
-                #print(int(pos[0]/100))
-                #print(int(pos[1]/100))
-                
+        if(teclado[pygame.K_F5]):
+            if(caminhoVazio() == 1):
+                time.sleep(0.1)
+                xTemp = iniY = int(pacMan.rect.x/100)
+                yTemp = iniX = int(pacMan.rect.y/100)
+                desX = int(xTemp)
+                desY = int(yTemp)
+                caminho[desY][desX] = 1
+                for x in range(len(caminho)):
+                    for y in range(len(caminho)):
+                        if(caminho[x][y] == 3):
+                            desX = x
+                            desY = y
+                            break
+                    #print(int(pos[0]/100))
+                    #print(int(pos[1]/100))
+                    
 
-                #print(pos)
-            listaAberta = []
-            listaFechada = []
-            e = Estado(iniX,iniY)
-            listaAberta.append(e)
-            e = busca()
-            movimento = getCaminho(e)
-            caminho[yTemp][xTemp] = 0
+                    #print(pos)
+                listaAberta = []
+                listaFechada = []
+                e = Estado(iniX,iniY)
+                listaAberta.append(e)
+                e = busca()
+                movimento = getCaminho(e)
+                caminho[yTemp][xTemp] = 0
 
-            ini = time.time()
-            caminho[desX][desY] = 0
+                ini = time.time()
+                caminho[desX][desY] = 0
                 
                 #print("============")
                 #for i in listaFechada:
@@ -527,7 +530,8 @@ while True:
                 comida[len(comida)-1].rect.y = xTemp*100
                 comida[len(comida)-1].rect.x = yTemp*100
                 todas_as_sprites.add(comida[len(comida)-1])
-                
+                while(caminho[xTemp][yTemp] == 0):
+                    caminho[xTemp][yTemp] = 3
                 time.sleep(0.05)
             else:
                 for i in comida:
