@@ -16,7 +16,7 @@ def desornenar(arr):                                    #Desordenar String
         for y in range(0, len(arr)+1):                  #   O(n+1)
             for z in range(0, len(arr)):                #   O(n)
                 r = math.floor(random.uniform(x,y));    #O(1)
-                if(r <= y or r <= x or r <= y):         #   O( n*(n+1)*n )
+                if(r <= x or r <= y or r <= z):         #   O( n*(n+1)*n )
                     count += 1                          #O(1)
                     aux = arr[z]                        #O(1)
                     arr[z] = arr[r]                     #O(1)
