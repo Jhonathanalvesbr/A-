@@ -40,7 +40,7 @@ def desornenar(arr):                                    #Desordenar String
     for x in range(0, len(arr)):                        #   O(n)
         for y in range(0, len(arr)+1):                  #   O(n+1)
             for z in range(0, len(arr)):                #   O(n)
-                r = math.floor(random.uniform(x,y));    #O(1)
+                r = int(random.uniform(x,y));           #O(1)
                 if(r <= x or r <= y):                   #   O( n*(n+1)*n )
                     #count += 1                          #O(1)
                     aux = arr[z]                        #O(1)
@@ -66,6 +66,22 @@ def insertionSort(arr):                                 #Ordenar String - Insert
 
 cmp = criaNumeros(500)                                  #O(1)
 
+
+arr = [10,20,40,80,160,320]                                  #O(n)
+#print(i)                                            #O(1)
+        n = len(arr)                                        #O(1)
+        r = (n**2)*(n+1)                                    #O(1)
+        a = time.time()                                     #O(1)
+        insertionSort(arr)
+        #print("Ordenado!" + str(insertionSort(arr)))       #O( (n^2)*(n+1) )
+        b = time.time()                                     #O(1)
+        #print("Calculo de comparações: " + str(r))          #O(1)
+        #print("Time: "+str(b-a))                            #O(1)
+        #print("")                                           #O(1)
+        arq.writerow([i,r,(b-a)])
+
+
+'''
 with open('Numeros.csv', 'w', encoding='UTF-8', newline='') as arquivo:
     arq = csv.writer(arquivo)
     arq.writerow(["N", "Comparações", "Tempo"])
@@ -121,3 +137,4 @@ with open('Frases.csv', 'w', encoding='UTF-8', newline='') as arquivo:
         arq.writerow([i,r,(b-a)])
 arquivo.close()
 print("Frases")
+'''
