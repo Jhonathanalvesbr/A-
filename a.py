@@ -67,18 +67,21 @@ def insertionSort(arr):                                 #Ordenar String - Insert
 cmp = criaNumeros(500)                                  #O(1)
 
 
-arr = [10,20,40,80,160,320]                                  #O(n)
+k = [10,20,40,80,160,320]                                  #O(n)
 #print(i)                                            #O(1)
-        n = len(arr)                                        #O(1)
-        r = (n**2)*(n+1)                                    #O(1)
-        a = time.time()                                     #O(1)
-        insertionSort(arr)
-        #print("Ordenado!" + str(insertionSort(arr)))       #O( (n^2)*(n+1) )
-        b = time.time()                                     #O(1)
-        #print("Calculo de comparações: " + str(r))          #O(1)
-        #print("Time: "+str(b-a))                            #O(1)
-        #print("")                                           #O(1)
-        arq.writerow([i,r,(b-a)])
+for i in k:
+    print(i)
+    arr = criaNumerosAleatorios(i) 
+    n = len(arr)                                        #O(1)
+    r = (n**2)*(n+1)                                    #O(1)
+    a = time.time()                                     #O(1)
+    insertionSort(arr)
+    print("Ordenado!" + str(insertionSort(arr)))       #O( (n^2)*(n+1) )
+    b = time.time()                                     #O(1)
+    print("Calculo de comparações: " + str(r))          #O(1)
+    print("Time: "+str(b-a))                            #O(1)
+    print("")                                           #O(1)
+
 
 
 '''
