@@ -28,29 +28,29 @@ def split(sequence, n_steps_in, n_steps_out):
 		y.append([seq_y])
 	return array(X), array(y)
     
-def r():
-    global tempoFrente
-    global timestamp
-    global v,s
-    v = []
-    conexao = pymysql.connect(db='deriv', user='root', passwd='root')
-    cursor = conexao.cursor()
-    cursor.execute("select valor from preco ORDER BY id asc LIMIT "+str(50)+";")
-    tmp = cursor.fetchall()
-    for k in tmp:
-        v.append(float(str(k).replace("(","").replace(")","").replace(",","")))
-    s = v
-    #v = v[::-1]
-    #v = v[0:100]
-r()
+
 def getVetor():
     global tempoFrente
     global timestamp
+    global s
+    v = []
+    conexao = pymysql.connect(db='deriv', user='root', passwd='root')
+    cursor = conexao.cursor()
+    cursor.execute("select valor from preco ORDER BY id desc LIMIT "+str(timestamp)+";")
+    tmp = cursor.fetchall()
+    for k in tmp:
+        v.append(float(str(k).replace("(","").replace(")","").replace(",","")))
+    s = v[::-1]
+    #v = v[0:100]
+
+def getDados():
+    global tempoFrente
+    global timestamp
     global v,s
     v = []
     conexao = pymysql.connect(db='deriv', user='root', passwd='root')
     cursor = conexao.cursor()
-    cursor.execute("select valor from preco where id <= 100 ORDER BY id desc LIMIT "+str(100)+";")
+    cursor.execute("select valor from preco ORDER BY id desc LIMIT "+str(100)+";")
     tmp = cursor.fetchall()
     for k in tmp:
         v.append(float(str(k).replace("(","").replace(")","").replace(",","")))
@@ -77,7 +77,7 @@ timestamp = 5
 tempoFrente = 5
 
 
-getVetor()
+getDados()
 '''
 sc = MinMaxScaler(feature_range = (0, 1))
 v = sc.fit_transform(v)
@@ -120,15 +120,23 @@ values = [np.nan]*(tempoFrente)
 values = np.append(values, y)
 values.reshape(values.shape[0], 1)
 #y = sc.inverse_transform(y)
-plt.plot(s, color = "black")
-plt.plot(v, color = "blue", alpha=.5)
+#plt.plot(s, color = "black")
+#plt.plot(v, color = "blue", alpha=.5)
 
 #plt.plot(values, color = "green")
 #plt.plot(yhat, color = "red")
-plt.show()
-a = [v[45],v[46],v[47],v[48],v[49]]
+#plt.show()
+getVetor()
+a = s
 a = np.array(a)
 a = a.reshape(-1,1)
 a = np.array([a])
 a = model.predict(a)
-print(a[0][0])
+a = a[0][0]
+print([s[timestamp-1],a])
+
+if(a < s[timestamp-1]):
+    driver.find_elements_by_id("dt_purchase_call_button")[0].click()
+else:
+    driver.find_elements_by_id("dt_purchase_put_button")[0].click()
+time.sleep(10)
