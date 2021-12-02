@@ -1080,7 +1080,7 @@ def op():
         else:
                 ve.click()
         
-        time.sleep(1)
+        time.sleep(11)
         
         
 
